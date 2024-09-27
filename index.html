@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Ayaan's Daily Summary</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css" />
+    <style>
+      body
+      {
+        background-color: #eee;;
+      }
+
+      .entry-form-sec{
+        background-color: #eee;
+        padding: 50px 0;
+        position: relative;
+        z-index: 1;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .entry-form h2{
+        color: #000;
+        padding-bottom: 30px;
+      }
+
+      .entry-form{
+        position: relative;
+        z-index: 1;
+        background: #fff;
+        border-radius: 4px;
+        box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+        padding: 30px;
+        width: 100%;
+        margin: 0 auto;
+      }
+
+      .entry-form .form-control:focus,.entry-form .form-select:focus{
+        box-shadow: none;
+        border-color: #8fd6b0;
+        background-color: #fff;
+      }
+
+      .entry-form .form-control,.entry-form select{
+        background-color: #fff;
+        font-size: 16px;
+        color: #000;
+        font-weight: 400;
+        border: 1px solid #8fd6b0;
+        height: 40px;
+      }
+
+      .entry-form label{
+        color: #000;
+        font-size: 16px;
+        font-weight: 500;
+        padding-bottom: 6px;
+        width: 70%;
+      }
+
+      h3{
+          color:#566696;
+          font-size: 2.75rem;
+      }
+          
+      @media only screen and (max-width: 776px){
+        .entry-form{
+          width: 100%;
+          padding: 10px;
+        }
+        .main-heading{
+          font-size: 3rem !important;
+        }
+        .entry-form table td:last-child{
+          width: 30%;
+        }
+      }
+
+      @media only screen and (max-width: 576px){
+          
+        .entry-form-sec{
+          padding: 10px 0;
+        }
+        .main-heading{
+          font-size: 2.5rem !important;
+        }
+      }
+      @media (max-width: 990px) {
+        .container{
+          max-width: 100%;
+        }
+        .entry-form{
+          width: 100%;
+          padding: 10px;
+        }
+      }
+      .main-heading{
+        color: #003282;
+        font-size: 4rem;
+        text-align: center;
+      }
+
+      .loading-heading{
+        color: rgb(52, 138, 52);
+        font-size: 4rem;
+        text-align: center;
+        animation: fadeInOut 2.5s ease-in-out infinite;
+      }
+      .error-message{
+        color: red;
+        font-size: 4rem;
+        text-align: center;
+      }
+      @keyframes fadeInOut {
+          0%, 100% {
+              opacity: 0;
+          }
+          50% {
+              opacity: 1;
+          }
+      }
+      .underline{
+        text-decoration: underline;
+      }
+      p.label{
+        font-size: 1.3rem;
+        font-weight: bold;
+      }
+      p.response{
+        font-size: 1.2rem;
+      }
+
+      /* table */
+      .entry-form table{
+        width: 100%;
+        text-align: center;
+      }
+      .form-tabel{
+        border:1px solid black;
+      }
+      .form-tabel tr{
+        border:1px solid black;
+      }
+      .entry-form td{
+        font-size: 1rem;
+      }
+      tr th.label{
+        background-color: #003282;
+        font-size: 1.1rem;
+        color: white;
+        padding-top: 5px;
+        padding-bottom: 5px;
+      }
+      tr td.summary{
+        padding-top: 5px;
+        padding-bottom: 5px;
+      }
+      .img-div img{
+        height: 30rem;
+      }
+      /* Adjust image container's padding and alignment */
+.img-div {
+    text-align: center; /* Center align the image */
+    padding: 15px; /* Add padding around images */
+}
+
+/* Add responsiveness and adjust image size for different screens */
+.custom-img {
+    max-width: 100%;  /* Ensure the image never exceeds its container's width */
+    height: auto;     /* Maintain aspect ratio */
+}
+
+/* Adjust image size based on screen */
+@media (max-width: 576px) {
+    .custom-img {
+        width: 100%; /* Full width for small screens */
+    }
+    input {
+        height: 35px;  /* Smaller height for smaller screens */
+    }
+}
+
+@media (min-width: 576px) and (max-width: 768px) {
+    .custom-img {
+        width: 90%; /* Slightly smaller on small to medium screens */
+    }
+    input {
+        height: 40px;  /* Medium screen height */
+    }
+}
+
+@media (min-width: 768px) and (max-width: 992px) {
+    .custom-img {
+        width: 80%; /* Medium screens get a smaller image */
+    }
+    input {
+        height: 45px;  /* Larger height for bigger screens */
+    }
+}
+
+@media (min-width: 992px) {
+    .custom-img {
+        width: 70%; /* Larger screens have even smaller images */
+    }
+    input {
+        height: 50px;  /* Even larger height for large screens */
+    }
+}
+
+input{
+    width: 100%;      /* Full width within its container */
+    height: 40px;     /* Set a default height */
+    padding: 10px;    /* Add some padding for better spacing */
+}
+
+tbody tr td{
+  border-width: 1px;
+}
+
+pre {
+    display: inline-block;
+    margin-top: 0;
+    padding: 10px;
+    overflow: auto;
+    font-size: .875em;
+    width: 100%;
+    white-space: pre-wrap;
+    text-align: left;
+}
+.main-head{
+  color: white;
+  background: #1791c1;
+  font-size: 1.3rem;
+}
+    </style>
+</head>
+<body>
+
+
+<section class="entry-form-sec">
+  <div class="container">
+    <div class="entry-form" id="entry-form">
+      <div class="row">
+        <div class="col-md-12 mb-3">
+          <h1 class="main-heading">Ayaan's Daily Summary</h1><hr>
+        </div>
+        <div class="col-md-6 col-sm-12 mb-3 date" id="date">
+          <label for="">Date </label>
+          <input type="text" name="date" class="form-control datepicker" readonly>
+        </div>
+      </div>
+      <div class="row loading d-none">
+        <div class="col-12">
+          <h1 class="loading-heading">Fetching Data...</h1>
+        </div>
+      </div>
+      <div class="row error-div d-none">
+        <div class="col-12">
+          <h1 class="error-message">Record not found</h1>
+        </div>
+      </div>
+      <!-- Therapy -->
+      <div class="row therapy d-none">
+        <div class="col-12 mb-2">
+          <h3 class="underline"><b>Therapy</b></h3>
+        </div>
+        <div class="col-12 mb-3 table-responsive">
+          <table class="form-tabel mt-1 therapy-tbl">
+            <tbody>
+              <tr>
+                <th class="label">Therapist</th>
+              </tr>
+              <tr>
+                <th class="label">Session Time Window</th>
+              </tr>
+              <tr>
+                <th class="label">Therapy Location</th>
+              </tr>
+              <tr>
+                <th class="label">Behavior Rate: Stimming (Instances per hour)</th>
+              </tr>
+              <tr>
+                <th class="label">Behavior Rate: Mouthing (Mouths per hour)</th>
+              </tr>
+              <tr>
+                <th class="label">Behavior Count: Aggression</th>
+              </tr>
+              <tr>
+                <th class="label">Behavior Rate: Aggression (Instances per hour)</th>
+              </tr>
+              <tr>
+                <th class="label">ABCs for Aggression Instances</th>
+              </tr>
+              <tr>
+                <th class="label">Problematic Behavior Count: Spitting</th>
+              </tr>
+              <tr>
+                <th class="label">Problematic Behavior Count: Space Invasion</th>
+              </tr>
+              <tr>
+                <th class="label">Problematic Behavior Count: Fixations</th>
+              </tr>
+              <tr>
+                <th class="label">Circle Time Independent Participation Time (minutes)</th>
+              </tr>
+              <tr>
+                <th class="label">Session Description and General Notes</th>
+              </tr>
+            </tbody>
+          </table>
+        </div><hr>
+      </div>
+
+      <!-- Care -->
+      <div class="row care d-none">
+        <div class="col-12 mb-2">
+          <h3 class="underline"><b>Care</b></h3>
+        </div>
+        <div class="col-12 mb-3 table-responsive">
+          <table class="form-tabel mt-1 care-sleep-tbl">
+            <thead>
+              <tr>
+                <th colspan="2" class="main-head">SLEEP</th>
+              </tr>
+            </thead>
+            <tbody class="care-tbody">
+              <tr>
+                <th class="label" width="30%">Slept With</th>
+              </tr>
+              <tr>
+                <th class="label" width="30%">Asleep by</th>
+              </tr>
+              <tr>
+                <th class="label" width="30%">Awoke by</th>
+              </tr>
+              <tr>
+                <th class="label" width="30%">Time Awake at Night</th>
+              </tr>
+              <tr>
+                <th class="label" width="30%">Restlessness</th>
+              </tr>
+              <tr>
+                <th class="label" width="30%">Awoken by</th>
+              </tr>
+            </tbody>
+          </table>
+        </div><hr>
+        <div class="col-12 mb-3 table-responsive">
+          <table class="form-tabel mt-1 care-supplement-tbl">
+            <thead>
+              <tr>
+                <th colspan="2" class="main-head">Food, Supplements, Medications</th>
+              </tr>
+            </thead>
+            <tbody class="care-tbody">
+              <tr>
+                <th class="label" width="30%">Breakfast</th>
+              </tr>
+              <tr>
+                <th class="label" width="30%">Morning Snack</th>
+              </tr>
+              <tr>
+                <th class="label" width="30%">Lunch</th>
+              </tr>
+              <tr>
+                <th class="label" width="30%">Afternoon Snack</th>
+              </tr>
+              <tr>
+                <th class="label" width="30%">Dinner</th>
+              </tr>
+              <tr>
+                <th class="label" width="30%">Any Risky Foods Today</th>
+              </tr>
+              <tr>
+                <th class="label" width="30%">Supplements</th>
+              </tr>
+              <tr>
+                <th class="label" width="30%">Medicine</th>
+              </tr>
+              <tr>
+                <th class="label" width="30%">Other Not Captured Foods</th>
+              </tr>
+            </tbody>
+          </table>
+        </div><hr>
+        <div class="col-12 mb-3 table-responsive">
+          <table class="form-tabel mt-1 care-happened-tbl">
+            <thead>
+              <tr>
+                <th colspan="2" class="main-head">What Happened Today</th>
+              </tr>
+            </thead>
+            <tbody class="care-tbody">
+              <tr>
+                <th class="label" width="30%">Lack of Wellness</th>
+              </tr>
+              <tr>
+                <th class="label" width="30%">Bowel Movements</th>
+              </tr>
+              <tr>
+                <th class="label" width="30%">Day Type</th>
+              </tr>
+              <tr>
+                <th class="label" width="30%">Behavior Count: Aggression</th>
+              </tr>
+              <tr>
+                <th class="label" width="30%">ABCs for Aggression Instances</th>
+              </tr>
+              <tr>
+                <th class="label" width="30%">Behavior Count: Tantrums</th>
+              </tr>
+              <tr>
+                <th class="label" width="30%">ABCs for Tantrum Instances</th>
+              </tr>
+              <tr>
+                <th class="label" width="30%">Behavior Rate: Stimming (Max number instances per hour)</th>
+              </tr>
+              <tr>
+                <th class="label" width="30%">Behavior Scale: Regulation</th>
+              </tr>
+              <tr>
+                <th class="label" width="30%">Activities</th>
+              </tr>
+              <tr>
+                <th class="label" width="30%">Notes and Significant Events</th>
+              </tr>
+              <tr>
+                <th class="label" width="30%">School Day Description</th>
+              </tr>
+            </tbody>
+          </table>
+        </div><hr>
+      </div>
+
+      <!-- Images -->
+      <div class="row images d-none">
+        <div class="col-12 mb-2">
+          <h3 class="underline"><b>Images</b></h3>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+<script>
+  $(document).ready(function(){
+    $(".datepicker").datepicker({ 
+        autoclose: true, 
+        todayHighlight: true,
+        format: 'mm/dd/yyyy'
+    });
+  })
+
+  function makeDate(inputDate) {
+      let selectedDate = inputDate.split('/');
+      let month = Number(selectedDate[0]);  // Months are zero-based, so add 1
+      let day = Number(selectedDate[1]);
+      let year = Number(selectedDate[2]);
+
+      // Format the date as M/D/YYYY without leading zeros
+      return `${month}/${day}/${year}`;
+  }
+
+  $(document).on('change','.datepicker',function(){
+
+    $('.date, .therapy, .images, .care').addClass('d-none')
+    $('.error-div').addClass('d-none')
+    $('.loading').removeClass('d-none')
+
+    date = makeDate($(this).val())
+    $('.img-div').remove()
+
+    $.get("https://script.google.com/macros/s/AKfycbyzXsRheHtYVANdBhLaQUpKAJA9QQ5IpSjHPtg31gP-EfGr2jgraj2UhFWjxPQwwux87A/exec?page=get_data&date="+date, function (response){
+
+      var data = response.data
+      var caregiver_data = response.caregiver_data
+      
+      if(data.length != 0)
+      {
+        $('.date, .therapy').removeClass('d-none')
+        $('.loading').addClass('d-none')
+        $('.therapy-tbl tr td').remove()
+        for(var i=0; i<data.length; i++)
+        {
+          $(".therapy-tbl tr").eq(0).append(`<td>`+data[i][1]+`</td>`)
+          $(".therapy-tbl tr").eq(1).append(`<td>`+data[i][2]+`</td>`)
+          $(".therapy-tbl tr").eq(2).append(`<td>`+data[i][3]+`</td>`)
+          $(".therapy-tbl tr").eq(3).append(`<td>`+data[i][4]+`</td>`)
+          $(".therapy-tbl tr").eq(4).append(`<td>`+data[i][5]+`</td>`)
+          $(".therapy-tbl tr").eq(5).append(`<td>`+data[i][6]+`</td>`)
+          $(".therapy-tbl tr").eq(6).append(`<td>`+data[i][7]+`</td>`)
+          $(".therapy-tbl tr").eq(7).append(`<td>`+data[i][8]+`</td>`)
+          $(".therapy-tbl tr").eq(8).append(`<td>`+data[i][9]+`</td>`)
+          $(".therapy-tbl tr").eq(9).append(`<td>`+data[i][10]+`</td>`)
+          $(".therapy-tbl tr").eq(10).append(`<td>`+data[i][11]+`</td>`)
+          $(".therapy-tbl tr").eq(11).append(`<td>`+data[i][12]+`</td>`)
+          $(".therapy-tbl tr").eq(12).append(`<td><pre>`+data[i][13]+`</pre></td>`)
+          
+          if(data[i][14] != "")
+          {
+            $('.images').removeClass('d-none')
+            var comma_seperated = data[i][14].split(',')
+            if(comma_seperated.length != 0)
+            {
+              for(var j=0; j<comma_seperated.length; j++)
+              {
+                var id = comma_seperated[j].split('?id=')
+                var id = id[1]
+                $('.images').append(`
+                  <div class="col-sm-12 col-md-6 col-lg-4 img-div mb-3">
+                    <img src="https://drive.google.com/thumbnail?id=`+id+`&sz=w1000" alt="img" class="img-fluid custom-img">
+                  </div>
+                `)
+              }
+            }
+            else 
+            {
+              var id = data[i][14].split('?id=')
+              var id = id[1]
+              $('.images').append(`
+                <div class="col-sm-12 col-md-6 col-lg-4 img-div mb-3">
+                  <img src="https://drive.google.com/thumbnail?id=`+id+`&sz=w1000" alt="img" class="img-fluid custom-img">
+                </div>
+              `)
+            }
+          }
+        }
+      }
+
+      if(caregiver_data.length != 0)
+      {
+        $('.date, .care').removeClass('d-none')
+        $('.loading').addClass('d-none')
+        $('.care-tbody tr td').remove()
+
+        // sleep
+        var slept_with = '<b>-</b>', asleep_by = '<b>-</b>', awoke_by = '<b>-</b>', awake_at_night = '0', restlessness = '<b>-</b>', awoken_by = '<b>-</b>'
+
+        // supplements
+        var breakfast = [], morning_snack = [], lunch = [], afternoon_snack = [], dinner = [], any_risky_foods_today = [], medicine = [], supplement = [], not_capture_food = []
+
+        // what happened
+        var lack_of_wellness = [], bowel_movements = [], day_type = [], behavior_count_aggression = [], aggression_instance = [], behavior_count_tantrums = [], tantrum_instance = [], behavior_rate_stimming = [], behavior_scale = [], activities = [], notes_significant_events = [], school_day_description = []
+
+        for(var i=0; i<caregiver_data.length; i++)
+        {
+          // sleep
+          if(caregiver_data[i][2] != "" && slept_with=='<b>-</b>')
+          {
+            slept_with = caregiver_data[i][2]
+          }
+          if(caregiver_data[i][3] != "" && asleep_by == '<b>-</b>')
+          {
+            asleep_by = caregiver_data[i][3]
+          }
+          if(caregiver_data[i][4] != "" && awoke_by == '<b>-</b>')
+          {
+            awoke_by = caregiver_data[i][4]
+          }
+          if(caregiver_data[i][5] != "" && awake_at_night<caregiver_data[i][5])
+          {
+            awake_at_night = caregiver_data[i][5]
+          }
+          if(caregiver_data[i][6] != "" && restlessness == '<b>-</b>')
+          {
+            restlessness = caregiver_data[i][6]
+          }
+          if(caregiver_data[i][7] != "" && awoken_by == '<b>-</b>')
+          {
+            awoken_by = caregiver_data[i][7]
+          }
+
+          // supplements
+          // breakfast
+          if(caregiver_data[i][9] != "")
+          {
+            var seperated_breakfast = caregiver_data[i][9].split(',')
+            for(var j=0; j<seperated_breakfast.length; j++)
+            {
+              if(breakfast.indexOf(seperated_breakfast[j]) == -1)
+              {
+                breakfast.push(seperated_breakfast[j])
+              }
+            }
+          }
+          // morning snack 
+          if(caregiver_data[i][10] != "")
+          {
+            var seperated_mornging_snack = caregiver_data[i][10].split(',')
+            for(var j=0; j<seperated_mornging_snack.length; j++)
+            {
+              if(morning_snack.indexOf(seperated_mornging_snack[j]) == -1)
+              {
+                morning_snack.push(seperated_mornging_snack[j])
+              }
+            }
+          }
+          // Lunch
+          if(caregiver_data[i][11] != "")
+          {
+            var seperated_lunch = caregiver_data[i][11].split(',')
+            for(var j=0; j<seperated_lunch.length; j++)
+            {
+              if(lunch.indexOf(seperated_lunch[j]) == -1)
+              {
+                lunch.push(seperated_lunch[j])
+              }
+            }
+          }
+          // Afternoon snack
+          if(caregiver_data[i][12] != "")
+          {
+            var seperated_afternoon_snack = caregiver_data[i][12].split(',')
+            for(var j=0; j<seperated_afternoon_snack.length; j++)
+            {
+              if(afternoon_snack.indexOf(seperated_afternoon_snack[j]) == -1)
+              {
+                afternoon_snack.push(seperated_afternoon_snack[j])
+              }
+            }
+          }
+          // Dinner
+          if(caregiver_data[i][13] != "")
+          {
+            var seperated_dinner = caregiver_data[i][13].split(',')
+            for(var j=0; j<seperated_dinner.length; j++)
+            {
+              if(dinner.indexOf(seperated_dinner[j]) == -1)
+              {
+                dinner.push(seperated_dinner[j])
+              }
+            }
+          }
+          // Risky food
+          if(caregiver_data[i][14] != "")
+          {
+            var seperated_risky_food = caregiver_data[i][14].split(',')
+            for(var j=0; j<seperated_risky_food.length; j++)
+            {
+              if(any_risky_foods_today.indexOf(seperated_risky_food[j]) == -1)
+              {
+                any_risky_foods_today.push(seperated_risky_food[j])
+              }
+            }
+          }
+          // Supplements
+          if(caregiver_data[i][8] != "")
+          {
+            var seperated_supplement = caregiver_data[i][8].split(',')
+            for(var j=0; j<seperated_supplement.length; j++)
+            {
+              if(supplement.indexOf(seperated_supplement[j]) == -1)
+              {
+                supplement.push(seperated_supplement[j])
+              }
+            }
+          }
+          // Medicine
+          if(caregiver_data[i][15] != "")
+          {
+            var seperated_medicine = caregiver_data[i][15].split(',')
+            for(var j=0; j<seperated_medicine.length; j++)
+            {
+              if(medicine.indexOf(seperated_medicine[j]) == -1)
+              {
+                medicine.push(seperated_medicine[j])
+              }
+            }
+          }
+          // Food not captured
+          if(caregiver_data[i][18] != "")
+          {
+            var seperated_not_captured= caregiver_data[i][18].split(',')
+            for(var j=0; j<seperated_not_captured.length; j++)
+            {
+              if(not_capture_food.indexOf(seperated_not_captured[j]) == -1)
+              {
+                not_capture_food.push(seperated_not_captured[j])
+              }
+            }
+          }
+
+          // What happened
+          // Lack of Wellness
+          if(caregiver_data[i][16] != "")
+          {
+            var seperated_lack_of_wellness= caregiver_data[i][16].split(',')
+            for(var j=0; j<seperated_lack_of_wellness.length; j++)
+            {
+              if(lack_of_wellness.indexOf(seperated_lack_of_wellness[j]) == -1)
+              {
+                lack_of_wellness.push(seperated_lack_of_wellness[j])
+              }
+            }
+          }
+          // Bowel Movements
+          if(caregiver_data[i][17] != "")
+          {
+            var seperated_bowel_movements= caregiver_data[i][17].split(',')
+            for(var j=0; j<seperated_bowel_movements.length; j++)
+            {
+              if(bowel_movements.indexOf(seperated_bowel_movements[j]) == -1)
+              {
+                bowel_movements.push(seperated_bowel_movements[j])
+              }
+            }
+          }
+          // Day type
+          if(caregiver_data[i][27] != "")
+          {
+            var seperated_day_type= caregiver_data[i][27].split(',')
+            for(var j=0; j<seperated_day_type.length; j++)
+            {
+              if(day_type.indexOf(seperated_day_type[j]) == -1)
+              {
+                day_type.push(seperated_day_type[j])
+              }
+            }
+          }
+          // Behaviour count aggression
+          if(caregiver_data[i][19] != "")
+          {
+            var seperated_behavior_count_aggression= caregiver_data[i][19].split(',')
+            for(var j=0; j<seperated_behavior_count_aggression.length; j++)
+            {
+              if(behavior_count_aggression.indexOf(seperated_behavior_count_aggression[j]) == -1)
+              {
+                behavior_count_aggression.push(seperated_behavior_count_aggression[j])
+              }
+            }
+          }
+          // ABCs for Aggression Instances
+          if(caregiver_data[i][20] != "")
+          {
+            var seperated_aggression_instance = caregiver_data[i][20].split(',')
+            for(var j=0; j<seperated_aggression_instance.length; j++)
+            {
+              if(aggression_instance.indexOf(seperated_aggression_instance[j]) == -1)
+              {
+                aggression_instance.push(seperated_aggression_instance[j])
+              }
+            }
+          }
+          // Seperated Behavior Count Tantrums
+          if(caregiver_data[i][21] != "")
+          {
+            var seperated_behavior_count_tantrums= caregiver_data[i][21].split(',')
+            for(var j=0; j<seperated_behavior_count_tantrums.length; j++)
+            {
+              if(behavior_count_tantrums.indexOf(seperated_behavior_count_tantrums[j]) == -1)
+              {
+                behavior_count_tantrums.push(seperated_behavior_count_tantrums[j])
+              }
+            }
+          }
+          // ABCs for Tantrum Instances
+          if(caregiver_data[i][22] != "")
+          {
+            var seperated_tantrum_instance= caregiver_data[i][22].split(',')
+            for(var j=0; j<seperated_tantrum_instance.length; j++)
+            {
+              if(tantrum_instance.indexOf(seperated_tantrum_instance[j]) == -1)
+              {
+                tantrum_instance.push(seperated_tantrum_instance[j])
+              }
+            }
+          }
+          // Seperated Behavior Rate Stimming
+          if(caregiver_data[i][23] != "")
+          {
+            var seperated_behavior_rate_stimming= caregiver_data[i][23].split(',')
+            for(var j=0; j<seperated_behavior_rate_stimming.length; j++)
+            {
+              if(behavior_rate_stimming.indexOf(seperated_behavior_rate_stimming[j]) == -1)
+              {
+                behavior_rate_stimming.push(seperated_behavior_rate_stimming[j])
+              }
+            }
+          }
+          // behavior_scale
+          if(caregiver_data[i][24] != "")
+          {
+            var seperated_behavior_scale= caregiver_data[i][24].split(',')
+            for(var j=0; j<seperated_behavior_scale.length; j++)
+            {
+              if(behavior_scale.indexOf(seperated_behavior_scale[j]) == -1)
+              {
+                behavior_scale.push(seperated_behavior_scale[j])
+              }
+            }
+          }
+          // Activities
+          if(caregiver_data[i][25] != "")
+          {
+            var seperated_activities= caregiver_data[i][25].split(',')
+            for(var j=0; j<seperated_activities.length; j++)
+            {
+              if(activities.indexOf(seperated_activities[j]) == -1)
+              {
+                activities.push(seperated_activities[j])
+              }
+            }
+          }
+          // Notes and Significant Events
+          if(caregiver_data[i][26] != "")
+          {
+            var seperated_notes_significant_events= caregiver_data[i][26].split(',')
+            for(var j=0; j<seperated_notes_significant_events.length; j++)
+            {
+              if(notes_significant_events.indexOf(seperated_notes_significant_events[j]) == -1)
+              {
+                notes_significant_events.push(seperated_notes_significant_events[j])
+              }
+            }
+          }
+        }
+
+        // sleep
+        $(".care-sleep-tbl tbody tr").eq(0).append(`<td class="text-center">`+slept_with+`</td>`)
+        $(".care-sleep-tbl tbody tr").eq(1).append(`<td class="text-center">`+asleep_by+`</td>`)
+        $(".care-sleep-tbl tbody tr").eq(2).append(`<td class="text-center">`+awoke_by+`</td>`)
+        $(".care-sleep-tbl tbody tr").eq(3).append(`<td class="text-center">`+awake_at_night+`</td>`)
+        $(".care-sleep-tbl tbody tr").eq(4).append(`<td class="text-center">`+restlessness+`</td>`)
+        $(".care-sleep-tbl tbody tr").eq(5).append(`<td class="text-center">`+awoken_by+`</td>`)
+
+        // supplements
+        $(".care-supplement-tbl tbody tr").eq(0).append(`<td class="text-center">`+breakfast+`</td>`)
+        $(".care-supplement-tbl tbody tr").eq(1).append(`<td class="text-center">`+morning_snack+`</td>`)
+        $(".care-supplement-tbl tbody tr").eq(2).append(`<td class="text-center">`+lunch+`</td>`)
+        $(".care-supplement-tbl tbody tr").eq(3).append(`<td class="text-center">`+afternoon_snack+`</td>`)
+        $(".care-supplement-tbl tbody tr").eq(4).append(`<td class="text-center">`+dinner+`</td>`)
+        $(".care-supplement-tbl tbody tr").eq(5).append(`<td class="text-center">`+any_risky_foods_today+`</td>`)
+        $(".care-supplement-tbl tbody tr").eq(6).append(`<td class="text-center">`+supplement+`</td>`)
+        $(".care-supplement-tbl tbody tr").eq(7).append(`<td class="text-center">`+medicine+`</td>`)
+        $(".care-supplement-tbl tbody tr").eq(8).append(`<td class="text-center">`+not_capture_food+`</td>`)
+
+        // What happened today
+        $('.care-happened-tbl tbody tr').eq(0).append(`<td class="text-center">`+lack_of_wellness+`</td>`)
+        $('.care-happened-tbl tbody tr').eq(1).append(`<td class="text-center">`+bowel_movements+`</td>`)
+        $('.care-happened-tbl tbody tr').eq(2).append(`<td class="text-center">`+day_type+`</td>`)
+        $('.care-happened-tbl tbody tr').eq(3).append(`<td class="text-center">`+behavior_count_aggression+`</td>`)
+        $('.care-happened-tbl tbody tr').eq(4).append(`<td class="text-center">`+aggression_instance+`</td>`)
+        $('.care-happened-tbl tbody tr').eq(5).append(`<td class="text-center">`+behavior_count_tantrums+`</td>`)
+        $('.care-happened-tbl tbody tr').eq(6).append(`<td class="text-center">`+tantrum_instance+`</td>`)
+        $('.care-happened-tbl tbody tr').eq(7).append(`<td class="text-center">`+behavior_rate_stimming+`</td>`)
+        $('.care-happened-tbl tbody tr').eq(8).append(`<td class="text-center">`+behavior_scale+`</td>`)
+        $('.care-happened-tbl tbody tr').eq(9).append(`<td class="text-center">`+activities+`</td>`)
+        $('.care-happened-tbl tbody tr').eq(10).append(`<td class="text-center">`+notes_significant_events+`</td>`)
+        $('.care-happened-tbl tbody tr').eq(11).append(`<td class="text-center">`+school_day_description+`</td>`)
+      }
+
+      if(data.length == 0 && caregiver_data.length == 0)
+      {
+        $('.date').removeClass('d-none')
+        $('.loading').addClass('d-none')
+        $('.error-div').removeClass('d-none')
+      }
+
+    });
+  });
+</script>
+</body>
+</html>

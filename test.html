@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mobile Barcode Scanner</title>
+    
+    <!-- QuaggaJS Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/quagga/0.12.1/quagga.min.js"></script>
+
+    <!-- Basic Styling -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+        #scanner-container {
+            margin: 20px auto;
+            max-width: 640px;
+            width: 100%;
+            position: relative;
+        }
+        video {
+            width: 100%;
+            height: auto;
+        }
+        #output {
+            margin-top: 20px;
+            font-size: 1.5em;
+            color: green;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Mobile Barcode Scanner</h1>
+
+    <div id="scanner-container">
+        <!-- Video element to display the camera feed -->
+        <video id="barcode-scanner" autoplay></video>
+        <div id="output">Waiting for barcode...</div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Initialize QuaggaJS to start scanning
+            Quagga.init({
+                inputStream: {
+                    name: "Live",
+                    type: "LiveStream",
+                    target: document.querySelector('#barcode-scanner'), // Video element to render the camera
+                    constraints: {
+                        width: 640,
+                        height: 480,
+                        facingMode: "environment" // Use rear camera
+                    }
+                },
+                decoder: {
+                    readers: [
+                        "code_128_reader",  // Support Code 128
+                        "ean_reader",       // Support EAN
+                        "ean_8_reader",     // Support EAN-8
+                        "upc_reader"        // Support UPC
+                    ]
+                }
+            }, function(err) {
+                if (err) {
+                    console.error(err);
+                    return;
+                }
+                console.log("Initialization finished. Ready to start");
+                Quagga.start();  // Start scanning
+            });
+
+            // Listen for detected barcodes
+            Quagga.onDetected(function(data) {
+                const barcode = data.codeResult.code;
+                document.getElementById('output').innerText = 'Barcode Detected: ' + barcode;
+
+                // Optionally, stop scanning after detecting a barcode
+                Quagga.stop();
+            });
+        });
+    </script>
+
+</body>
+</html>
